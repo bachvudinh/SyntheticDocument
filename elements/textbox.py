@@ -39,5 +39,7 @@ class TextBox:
             return None, None
 
         text_layer = layers.Group(char_layers).merge()
-
+        # bounding_box = str(text_layer.bbox)
+        # text+= f": {bounding_box}"
+        # print(text)
         return text_layer, text

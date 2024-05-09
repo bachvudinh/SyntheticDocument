@@ -15,7 +15,7 @@ from synthtiger import components, layers, templates
 
 
 class SynthDoG(templates.Template):
-    def __init__(self, config=None, split_ratio: List[float] = [0.8, 0.1, 0.1]):
+    def __init__(self, config=None, split_ratio: List[float] = [1.0, 0.0, 0.0]):
         super().__init__(config)
         if config is None:
             config = {}
@@ -63,7 +63,7 @@ class SynthDoG(templates.Template):
         self.effect.apply([layer])
 
         image = layer.output(bbox=[0, 0, *size])
-        label = " ".join(texts)
+        label = ", ".join(texts)
         label = label.strip()
         label = re.sub(r"\s+", " ", label)
         quality = np.random.randint(self.quality[0], self.quality[1] + 1)
@@ -126,5 +126,5 @@ class SynthDoG(templates.Template):
             _gt_parse_v[k] = v
         gt_parse = {"gt_parse": _gt_parse_v}
         gt_parse_str = json.dumps(gt_parse, ensure_ascii=False)
-        metadata = {"file_name": image_filename, "ground_truth": gt_parse_str}
+        metadata = {"id": image_filename, "image":image_filename,"conversations": _gt_parse_v}
         return metadata

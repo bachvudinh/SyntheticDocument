@@ -11,7 +11,34 @@ from synthtiger import components
 from elements.textbox import TextBox
 from layouts import GridStack
 
+def bbox_to_quad(bbox):
+    x_min, y_min, x_max, y_max = bbox
+    quad = [
+        f'({x_min}, {y_min})',  # Bottom-left
+        f'({x_max}, {y_min})',  # Bottom-right
+        f'({x_max}, {y_max})',  # Top-right
+        f'({x_min}, {y_max})'   # Top-left
+    ]
 
+    return quad
+def round_and_format(array, decimal=1):
+    """
+    Rounds the numbers in a numpy array and formats them as a string.
+
+    Parameters:
+        array (np.array): Input array containing floating point numbers.
+        decimal (int): Number of decimal places to round to (default: 1).
+
+    Returns:
+        str: Formatted string with rounded numbers.
+    """
+    # Round the numbers in the array to the specified decimal places
+    rounded_array = np.round(array, decimal)
+
+    # Convert the rounded array to a string with specified format
+    formatted_string = ', '.join([f'({x[0]:.{decimal}f},{x[1]:.{decimal}f})' for x in rounded_array])
+
+    return formatted_string
 class TextReader:
     def __init__(self, path, cache_size=2 ** 28, block_size=2 ** 20):
         self.fp = open(path, "r", encoding="utf-8")
@@ -111,8 +138,17 @@ class Content:
 
                 self.textbox_color.apply([text_layer])
                 text_layers.append(text_layer)
-                texts.append(text)
+                # bounding_box = bbox_to_quad(text_layer.bbox)
+                # bounding_box = [round(coord,1) for coord in text_layer.bbox]
+                # bounding_box = str(bounding_box)
+                quad_coord = round_and_format(text_layer._quad)
+                # print(text_layer._quad)
 
+                # round the bounding box
+
+                text+=f": [{quad_coord}]"
+                # print(text)
+                texts.append(text)
         self.content_color.apply(text_layers)
 
         return text_layers, texts
