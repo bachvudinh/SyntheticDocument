@@ -1,0 +1,1 @@
+synthtiger -o ./outputs/SynthDoG_vi -c 1 -w 4 -v template.py SynthDoG config_vi.yaml

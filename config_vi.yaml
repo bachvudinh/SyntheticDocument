@@ -34,7 +34,7 @@ document:
     text:
       path: resources/corpus/viwik18.txt
     font:
-      paths: [resources/font/en]
+      paths: [resources/font/vi]
       weights: [1]
       bold: 0
     layout:
